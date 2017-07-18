@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:flow="http://www.springframework.org/schema/webflow-config"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/webflow-config http://www.springframework.org/schema/webflow-config/spring-webflow-config-2.4.xsd">
+
+<bean id="mvcViewFactoryCreator" class="org.springframework.webflow.mvc.builder.MvcViewFactoryCreator">
+	<property name="viewResolvers" ref="viewResolver"></property>
+</bean>
+
+<flow:flow-builder-services id="flowBuilderServices" view-factory-creator="mvcViewFactoryCreator"/>
+
+<!-- 
+the ID of flow-location maps the flow to [web context path]/[ID]
+for example: http://localhost:8080/spring-mvc-webflow/activationFlow -->
+<flow:flow-registry id="activationFlowRegistry" flow-builder-services="flowBuilderServices">
+	<flow:flow-location id="activationFlow" path="/WEB-INF/flows/activation-flow.xml"></flow:flow-location>
+</flow:flow-registry>
+
+<bean class="org.springframework.webflow.mvc.servlet.FlowHandlerMapping">
+	<property name="flowRegistry" ref="activationFlowRegistry"></property>
+</bean>
+
+<flow:flow-executor id="activationFlowExecutor" flow-registry="activationFlowRegistry"></flow:flow-executor>
+
+<bean class="org.springframework.webflow.mvc.servlet.FlowHandlerAdapter">
+	<property name="flowExecutor" ref="activationFlowExecutor" />
+</bean>
+
+</beans>
