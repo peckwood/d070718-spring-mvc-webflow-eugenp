@@ -16,7 +16,7 @@ build
 lib/
 target
 .factorypath
-.springBeans
+./springBeans
 interpolated*.xml
 dependency-reduced-pom.xml
 build.log
